@@ -22,30 +22,37 @@ const reactionSchema = new Schema({
     },
 });
 
-const thoughtSchema = new Schema({
-    thoughtText: {
-        type: String,
-        required: true,
-        minLength: 1,
-        maxLength: 280,
+const thoughtSchema = new Schema(
+    {
+        thoughtText: {
+            type: String,
+            required: true,
+            minLength: 1,
+            maxLength: 280,
+        },
+        createdAt: {
+            type: Date,
+            default: dayjs(),
+            get: (v) => `${dayjs(v).format("MMM DD, YYY at hh:mm a")}`,
+        },
+        username: {
+            type: String,
+            required: true,
+        },
+        reactions: [reactionSchema],
     },
-    createdAt: {
-        type: Date,
-        default: dayjs(),
-        get: (v) => `${dayjs(v).format("MMM DD, YYY at hh:mm a")}`,
-    },
-    username: {
-        type: String,
-        required: true,
-    },
-    reactions: [reactionSchema],
-});
+    {
+        toJSON: {
+            virtuals: true,
+        },
+    }
+);
 
 userSchema.virtual("reactionCount").get(function () {
     console.log(`Reaction count: ${this.reactions.length}`);
     return this.reactions.length;
 });
 
-const Thought = model("thought", thoughtSchema);
+const Thought = model("Thought", thoughtSchema);
 
 module.exports = Thought;
