@@ -3,7 +3,7 @@ const dayjs = require("dayjs");
 
 const reactionSchema = new Schema({
     reactionId: {
-        type: ObjectId,
+        type: Schema.Types.ObjectId,
         default: new ObjectId(),
     },
     reactionBody: {

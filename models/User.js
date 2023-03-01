@@ -18,8 +18,8 @@ const userSchema = new Schema({
             message: (props) => `${props.value} is not a valid email.`,
         },
     },
-    thoughts: [{ type: ObjectId, ref: "Thought" }],
-    friends: [{ type: ObjectId, ref: "User" }],
+    thoughts: [{ type: Schema.Types.ObjectId, ref: "Thought" }],
+    friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
 userSchema.virtual("friendCount").get(function () {
