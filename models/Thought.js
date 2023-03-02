@@ -1,26 +1,34 @@
-const { Schema, model } = require("mongoose");
+const { Schema, Types, model } = require("mongoose");
 const dayjs = require("dayjs");
 
-const reactionSchema = new Schema({
-    reactionId: {
-        type: Schema.Types.ObjectId,
-        default: new Schema.Types.ObjectId(),
+const reactionSchema = new Schema(
+    {
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId(),
+        },
+        reactionBody: {
+            type: String,
+            required: true,
+            maxLength: 280,
+        },
+        username: {
+            type: String,
+            required: true,
+        },
+        createdAt: {
+            type: Date,
+            default: dayjs(),
+            get: formatDate,
+        },
     },
-    reactionBody: {
-        type: String,
-        required: true,
-        maxLength: 280,
-    },
-    username: {
-        type: String,
-        required: true,
-    },
-    createdAt: {
-        type: Date,
-        default: dayjs(),
-        get: (v) => `${dayjs(v).format("MMM DD, YYY at hh:mm a")}`,
-    },
-});
+    {
+        toJSON: {
+            getters: true,
+        },
+        id: false,
+    }
+);
 
 const thoughtSchema = new Schema(
     {
@@ -33,7 +41,7 @@ const thoughtSchema = new Schema(
         createdAt: {
             type: Date,
             default: dayjs(),
-            get: (v) => `${dayjs(v).format("MMM DD, YYY at hh:mm a")}`,
+            get: formatDate,
         },
         username: {
             type: String,
@@ -44,13 +52,18 @@ const thoughtSchema = new Schema(
     {
         toJSON: {
             virtuals: true,
+            getters: true,
         },
         id: false,
     }
 );
 
+function formatDate(date) {
+    let formattedDate = dayjs(date).format("MMM DD, YYYY [at] hh:mm a");
+    return formattedDate;
+}
+
 thoughtSchema.virtual("reactionCount").get(function () {
-    console.log(`Reaction count: ${this.reactions.length}`);
     return this.reactions.length;
 });
 
