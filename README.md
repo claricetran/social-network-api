@@ -40,6 +40,11 @@ Use the following routes to perform the respective tasks from https://localhost.
 
 An example of how this api is used in insomnia is seen in the video below:
 
+
+https://user-images.githubusercontent.com/16968424/222384858-c73edf79-73eb-4d21-a317-1adfe4d0e475.mp4
+
+
+
 ## License
 
 Copyright 2023 Clarice Tran
